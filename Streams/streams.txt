@@ -1,0 +1,28 @@
+CREATE STREAM all_users_input1 (
+    email VARCHAR,
+    first_name VARCHAR,
+    last_name VARCHAR,
+    age INT,
+    address VARCHAR,
+    gender VARCHAR,
+    job VARCHAR,
+    has_children_under_16 BOOLEAN
+  ) WITH (
+    KAFKA_TOPIC = 'user-test2',
+    VALUE_FORMAT = 'AVRO'
+  );
+
+  CREATE STREAM adult_male_users1 AS
+    SELECT email, first_name, last_name, age, address, job, has_children_under_16
+    FROM all_users_input1
+    WHERE age >= 18 AND gender='M'
+    EMIT CHANGES;
+
+CREATE TABLE names_count_adults AS
+    SELECT
+        first_name,
+        count(first_name) as count
+    FROM adult_male_users1
+    WINDOW HOPPING (SIZE 60 SECONDS, ADVANCE BY 10 SECONDS)
+    GROUP BY first_name
+    EMIT CHANGES;
