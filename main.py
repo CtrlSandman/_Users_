@@ -8,9 +8,9 @@ def parse_args():
     arg_parser = ArgumentParser()
 
     arg_parser.add_argument("--topic", required=False, default='user-test2', help='Topic Name')
-    arg_parser.add_argument("--bootstrap-servers", required=False, default='192.168.31.219',
+    arg_parser.add_argument("--bootstrap-servers", required=False, default='VM IP',
                             help='Bootstrap server address')
-    arg_parser.add_argument("--schema-registry", required=False, default='http://192.168.31.219:8081',
+    arg_parser.add_argument("--schema-registry", required=False, default='http://VM IP:8081',
                             help='Schema registry url')
     arg_parser.add_argument("--schema-file", required=False, default='create-user-request1.avsc',
                             help='File name of Avro schema')
